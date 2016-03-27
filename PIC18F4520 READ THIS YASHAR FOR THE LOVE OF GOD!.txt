@@ -1,0 +1,54 @@
+For PIC18F4520 Programming: (this took forever to figure out)
+
+Use the MPLAB IDE. It is magic.
+
+Program the PIC, using MPLAB. If you don't you better set the configuration bits in the CODE.
+
+#include <p18f4520.h>
+
+All variable declaraitions must happen at the beginning of the code or you will get a Syntax Error.
+
+"INTRC-Port on RA6, Port on RA7" (for use of an internal clock)
+     Also "OSCCON =0x72;" should be the first line after variable declarations to set the speed of internal oscillator.
+
+Make sure that you are using Release instead of Debug.
+
+
+
+These settings must be PERFECT or it wont work. That took me forever god damn.
+
+Ref:
+http://wiki.ulcape.org/tutorials:pic:programming_basics
+---------------- The code below WORKS if the settings are correct. ------------------
+
+#include <p18f4520.h>
+
+void main(void)
+{
+	unsigned int i;
+    OSCCON =0x72;
+
+	LATD = 0x00;
+    TRISD = 0x00;
+
+
+    while(1)
+    {
+        LATDbits.LATD0 = 0;
+        for ( i = 0; i < 30000; i++)
+        {
+           Nop();
+        }
+
+        LATDbits.LATD0 = 1;
+        for ( i = 0; i < 30000; i++)
+        {
+            Nop();
+        }
+    }
+}
+
+
+-------------------------------------------------------------------------------------
+
+
